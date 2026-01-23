@@ -1,0 +1,14 @@
+services:
+  db:
+    image: postgres:15
+    restart: always
+    environment:
+      POSTGRES_USER: video_user
+      POSTGRES_PASSWORD: ViDeODbPaSs123
+      POSTGRES_DB: videodb
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+volumes:
+  db_data:
