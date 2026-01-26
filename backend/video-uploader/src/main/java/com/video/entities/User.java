@@ -26,18 +26,23 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Size(min=3, max=32, message = "Username can't exceed 32 characters!")
     @Column(unique = true, nullable = false)
     private String username;
+
     @Column(unique = true, nullable = false)
     @Email(message = "Email should be valid!")
     private String email;
+
     @Size(min=8, max = 32, message = "Password must be between 8 and 32 characters!")
     @Column(nullable = false, length = 255)
     @JsonIgnore
     private String password;
+
     @Column(nullable = false)
     private LocalDateTime createdAt;
+    
     @PrePersist
     protected void onCreate() {
         this.createdAt = LocalDateTime.now();
