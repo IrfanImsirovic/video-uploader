@@ -1,11 +1,10 @@
-// src/pages/SignInPage.jsx
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { signIn } from "../api/auth";
-import { useAuth } from "../auth/AuthContext";
+import { useAuth } from "../state/AuthContext.jsx";
 
 export default function SignInPage() {
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [err, setErr] = useState("");
   const [loading, setLoading] = useState(false);
@@ -18,7 +17,7 @@ export default function SignInPage() {
     setErr("");
     setLoading(true);
     try {
-      const data = await signIn({ email, password }); // adjust keys if backend differs
+      const data = await signIn({ username, password }); 
       setSession(data.token, data.user);
       nav("/", { replace: true });
     } catch (e) {
@@ -34,9 +33,9 @@ export default function SignInPage() {
 
       <form onSubmit={onSubmit}>
         <input
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          placeholder="Username"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
           style={{ width: "100%", padding: 10, marginBottom: 10 }}
         />
         <input
