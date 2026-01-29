@@ -156,39 +156,47 @@ public class VideoService {
     public record FileDownload(Resource resource, String contentType, String downloadFilename) {}
 
     private RawFile tryGenerateThumbnail(RawFile videoRaw) {
-        try {
-            Path videoPath = Path.of(videoRaw.getFilePath());
-            Path dir = videoPath.getParent();
-            String thumbStored = "thumb-" + videoRaw.getStoredFilename() + ".jpg";
-            Path thumbPath = dir.resolve(thumbStored);
+    try {
+        Path videoPath = Path.of(videoRaw.getFilePath());
+        Path dir = videoPath.getParent();
 
-            Process p = new ProcessBuilder(
-                    "ffmpeg",
-                    "-y",
-                    "-ss", "00:00:01",
-                    "-i", videoPath.toString(),
-                    "-frames:v", "1",
-                    thumbPath.toString()
-            ).redirectErrorStream(true).start();
+        String thumbStored = "thumb-" + videoRaw.getStoredFilename() + ".jpg";
+        Path thumbPath = dir.resolve(thumbStored);
 
-            int code = p.waitFor();
-            if (code != 0 || !thumbPath.toFile().exists()) {
-                return null;
-            }
+        Process p = new ProcessBuilder(
+                "ffmpeg",
+                "-y",
+                "-ss", "00:00:01",
+                "-i", videoPath.toString(),
+                "-frames:v", "1",
+                thumbPath.toString()
+        ).redirectErrorStream(true).start();
 
-            File f = thumbPath.toFile();
-
-            RawFile thumb = new RawFile();
-            thumb.setOriginalFilename("thumbnail.jpg");
-            thumb.setStoredFilename(thumbStored);
-            thumb.setContentType("image/jpeg");
-            thumb.setSizeBytes(f.length());
-            thumb.setFilePath(thumbPath.toString());
-
-            return thumb;
-
-        } catch (Exception e) {
-            return null;
+        int code = p.waitFor();
+        if (code != 0 || !thumbPath.toFile().exists()) {
+            throw new ResponseStatusException(
+                    HttpStatus.INTERNAL_SERVER_ERROR,
+                    "Thumbnail generation failed (ffmpeg exit code " + code + ")"
+            );
         }
+
+        File f = thumbPath.toFile();
+
+        RawFile thumb = new RawFile();
+        thumb.setOriginalFilename("thumbnail.jpg");
+        thumb.setStoredFilename(thumbStored);
+        thumb.setContentType("image/jpeg");
+        thumb.setSizeBytes(f.length());
+        thumb.setFilePath(thumbPath.toString());
+
+        return thumb;
+
+    } catch (Exception e) {
+        throw new ResponseStatusException(
+                HttpStatus.INTERNAL_SERVER_ERROR,
+                "Thumbnail generation failed",
+                e
+        );
     }
+}
 }
