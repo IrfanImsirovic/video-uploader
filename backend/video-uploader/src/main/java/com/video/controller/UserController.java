@@ -17,6 +17,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.HashMap;
 
+import jakarta.validation.Valid;
 import com.video.dto.AuthResponse;
 import com.video.dto.LoginRequest;
 import com.video.dto.RegisterRequest;
@@ -42,7 +43,7 @@ public class UserController {
     UserService userService;
 
     @PostMapping("/auth/signup")
-    public ResponseEntity<AuthResponse> signup(@RequestBody RegisterRequest request) {
+    public ResponseEntity<AuthResponse> signup(@Valid@RequestBody RegisterRequest request) {
         if (userRepository.findByUsername(request.getUsername()).isPresent()) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Username already exists");
         }
@@ -64,7 +65,7 @@ public class UserController {
     }
     
     @PostMapping("/auth/signin")
-    public ResponseEntity<AuthResponse> signin(@RequestBody LoginRequest request) {
+    public ResponseEntity<AuthResponse> signin(@Valid@RequestBody LoginRequest request) {
         User user = userRepository.findByUsername(request.getUsername())
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid credentials"));
         
