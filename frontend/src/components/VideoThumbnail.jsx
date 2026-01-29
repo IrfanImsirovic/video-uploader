@@ -35,15 +35,16 @@ export default function VideoThumbnail({ videoId, alt, width = 240, height = 135
         style={{
           width,
           height,
-          background: '#f3f3f3',
+          background: 'rgba(255, 255, 255, 0.7)',
+          border: '1px solid rgba(0, 0, 0, 0.08)',
           borderRadius: 8,
           display: 'grid',
           placeItems: 'center',
-          color: '#666',
+          color: '#7a1f1f',
           fontSize: 12,
         }}
       >
-        No thumbnail
+        Thumbnail missing
       </div>
     )
   }

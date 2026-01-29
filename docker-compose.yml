@@ -36,5 +36,15 @@ services:
       - "8080:8080"
     volumes:
       - ./backend/video-uploader/uploads:/app/uploads
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    restart: always
+    depends_on:
+      - backend
+    ports:
+      - "3000:80"
 volumes:
   db_data:

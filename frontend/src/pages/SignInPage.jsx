@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { signIn } from "../api/auth";
+import { setAuthToken } from "../api/client";
 import { useAuth } from "../state/AuthContext.jsx";
 
 export default function SignInPage() {
@@ -18,7 +19,8 @@ export default function SignInPage() {
     setLoading(true);
     try {
       const data = await signIn({ username, password }); 
-      setSession(data.token, data.user);
+      setSession(data.token, { username: data.username, email: data.email });
+      setAuthToken(data.token);
       nav("/", { replace: true });
     } catch (e) {
       setErr(e?.response?.data?.message || "Sign in failed");
