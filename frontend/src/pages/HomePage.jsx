@@ -3,20 +3,14 @@ import { Link, useNavigate } from 'react-router-dom'
 
 import { listVideos } from '../api/videos'
 import VideoThumbnail from '../components/VideoThumbnail.jsx'
+import './HomePage.css'
 
 function PrivateBadge() {
   return (
-    <span
-      style={{
-        display: 'inline-block',
-        padding: '2px 8px',
-        borderRadius: 999,
-        fontSize: 12,
-        background: '#fff4e5',
-        color: '#7a4b00',
-        border: '1px solid #ffd8a8',
-      }}
-    >
+    <span className="privateBadge">
+      <span className="lock" aria-hidden="true">
+        🔒
+      </span>
       Private
     </span>
   )
@@ -101,103 +95,78 @@ export default function HomePage() {
   }
 
   return (
-    <div style={{ padding: '20px 0' }}>
-      <h1 style={{ margin: '0 0 12px' }}>Video Uploader</h1>
+    <div className="home">
+      <section className="hero">
+        <h1 className="heroTitle">Latest Videos</h1>
+        <p className="heroSubtitle">Discover and watch amazing content</p>
 
-      <div style={{ position: 'relative', maxWidth: 640 }}>
-        <form onSubmit={onSubmit}>
-          <input
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onFocus={() => setShowSuggestions(true)}
-            placeholder="Search videos..."
-            style={{ width: '100%', padding: '10px 12px', borderRadius: 10, border: '1px solid #ddd' }}
-          />
-        </form>
+        <div className="searchWrap">
+          <form onSubmit={onSubmit}>
+            <input
+              className="searchInput"
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              onFocus={() => setShowSuggestions(true)}
+              placeholder="Search videos..."
+            />
+          </form>
 
-        {showSuggestions && suggestions.length > 0 && (
-          <div
-            style={{
-              position: 'absolute',
-              top: 46,
-              left: 0,
-              right: 0,
-              background: 'white',
-              border: '1px solid #e5e5e5',
-              borderRadius: 10,
-              overflow: 'hidden',
-              zIndex: 10,
-            }}
-          >
-            {suggestions.map((v) => (
-              <button
-                key={v.id}
-                type="button"
-                onMouseDown={(e) => e.preventDefault()}
-                onClick={() => onPickSuggestion(v)}
-                style={{
-                  width: '100%',
-                  textAlign: 'left',
-                  padding: '10px 12px',
-                  border: 'none',
-                  background: 'transparent',
-                  cursor: 'pointer',
-                }}
-              >
-                <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                  <span style={{ fontWeight: 600 }}>{v.title}</span>
+          <svg className="searchIcon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path
+              d="M10.5 18a7.5 7.5 0 1 1 0-15 7.5 7.5 0 0 1 0 15Z"
+              stroke="currentColor"
+              strokeWidth="2"
+            />
+            <path
+              d="M16.2 16.2 21 21"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+            />
+          </svg>
+
+          {showSuggestions && suggestions.length > 0 && (
+            <div className="suggestions">
+              {suggestions.map((v) => (
+                <button
+                  key={v.id}
+                  type="button"
+                  className="suggestionBtn"
+                  onMouseDown={(e) => e.preventDefault()}
+                  onClick={() => onPickSuggestion(v)}
+                >
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                    <span style={{ fontWeight: 700 }}>{v.title}</span>
+                    {v.isPrivate && <PrivateBadge />}
+                  </div>
+                  <div style={{ fontSize: 12, opacity: 0.65 }}>{v.uploaderUsername}</div>
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+
+        <div className="sectionTitle">{title}</div>
+
+        {error && <div style={{ color: 'crimson' }}>{error}</div>}
+        {loading && <div>Loading…</div>}
+        {!loading && videos.length === 0 && <div>No videos found.</div>}
+
+        <div className="grid">
+          {videos.map((v) => (
+            <Link key={v.id} to={`/videos/${v.id}`} className="cardLink">
+              <div className="card">
+                <VideoThumbnail videoId={v.id} alt={v.title} />
+                <div className="cardTitleRow">
+                  <div className="cardTitle">{v.title}</div>
                   {v.isPrivate && <PrivateBadge />}
                 </div>
-                <div style={{ fontSize: 12, opacity: 0.7 }}>{v.uploaderUsername}</div>
-              </button>
-            ))}
-          </div>
-        )}
-      </div>
-
-      <h2 style={{ marginTop: 20 }}>{title}</h2>
-
-      {error && <div style={{ color: 'crimson' }}>{error}</div>}
-      {loading && <div>Loading…</div>}
-
-      {!loading && videos.length === 0 && <div>No videos found.</div>}
-
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))',
-          gap: 16,
-          marginTop: 12,
-        }}
-      >
-        {videos.map((v) => (
-          <Link
-            key={v.id}
-            to={`/videos/${v.id}`}
-            style={{
-              textDecoration: 'none',
-              color: 'inherit',
-              border: '1px solid #eee',
-              borderRadius: 12,
-              padding: 12,
-              display: 'grid',
-              gap: 10,
-            }}
-          >
-            <VideoThumbnail videoId={v.id} alt={v.title} />
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10 }}>
-              <div style={{ fontWeight: 700, lineHeight: 1.2 }}>{v.title}</div>
-              {v.isPrivate && <PrivateBadge />}
-            </div>
-            <div style={{ fontSize: 13, opacity: 0.75 }}>by {v.uploaderUsername}</div>
-            {v.description && (
-              <div style={{ fontSize: 13, opacity: 0.85 }}>
-                {v.description.length > 90 ? `${v.description.slice(0, 90)}…` : v.description}
+                <div className="cardMeta">by {v.uploaderUsername}</div>
               </div>
-            )}
-          </Link>
-        ))}
-      </div>
+            </Link>
+          ))}
+        </div>
+      </section>
     </div>
   )
 }

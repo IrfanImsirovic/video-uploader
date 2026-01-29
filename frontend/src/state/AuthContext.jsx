@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useMemo, useState } from 'react'
+import { setAuthToken } from '../api/client'
 
 const AuthContext = createContext(null)
 
@@ -23,6 +24,10 @@ export function AuthProvider({ children }) {
     if (saved?.user) setUser(saved.user)
   }, [])
 
+  useEffect(() => {
+    setAuthToken(token)
+  }, [token])
+
   const setSession = (nextToken, nextUser) => {
     setToken(nextToken)
     setUser(nextUser)
@@ -33,6 +38,7 @@ export function AuthProvider({ children }) {
     setToken(null)
     setUser(null)
     localStorage.removeItem(STORAGE_KEY)
+    setAuthToken(null)
   }
 
   const value = useMemo(

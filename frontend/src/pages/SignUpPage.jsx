@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { signUp } from "../api/auth";
-import { useAuth } from "../state/AuthContext";
+import { setAuthToken } from "../api/client";
+import { useAuth } from "../state/AuthContext.jsx";
 
 export default function SignUpPage() {
   const [username, setUsername] = useState("");
@@ -19,7 +20,8 @@ export default function SignUpPage() {
     setLoading(true);
     try {
       const data = await signUp({ username, email, password });
-      setSession(data.token, data.user);
+      setSession(data.token, { username: data.username, email: data.email });
+      setAuthToken(data.token);
       nav("/", { replace: true });
     } catch (e) {
       setErr(e?.response?.data?.message || "Sign up failed");

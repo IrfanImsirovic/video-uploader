@@ -13,29 +13,39 @@ export default function Navbar() {
   }
 
   return (
-    <header style={{ borderBottom: '1px solid #e5e5e5' }}>
-      <div style={{ maxWidth: 1000, margin: '0 auto', padding: '12px 16px', display: 'flex', gap: 16 }}>
-        <Link to="/" style={{ fontWeight: 700, textDecoration: 'none', color: 'inherit' }}>
-          VideoUploader
+    <header
+      style={{
+        position: 'sticky',
+        top: 0,
+        zIndex: 100,
+        borderBottom: '1px solid rgba(255, 255, 255, 0.25)',
+        background: 'rgba(255, 255, 255, 0.15)',
+        backdropFilter: 'blur(10px)',
+      }}
+    >
+      <div className="container" style={{ padding: '12px 16px', display: 'flex', gap: 16, alignItems: 'center' }}>
+        <Link to="/" style={{ fontWeight: 800, textDecoration: 'none', color: 'white' }}>
+          Video Platform
         </Link>
 
-        <nav style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
-          <NavLink to="/">Home</NavLink>
-          {isAuthenticated && <NavLink to="/upload">Upload</NavLink>}
-        </nav>
-
-        <div style={{ marginLeft: 'auto', display: 'flex', gap: 12, alignItems: 'center' }}>
+        <div style={{ marginLeft: 'auto', display: 'flex', gap: 14, alignItems: 'center' }}>
           {isAuthenticated ? (
             <>
-              <span style={{ opacity: 0.8 }}>{user?.username ?? 'Signed in'}</span>
+              <NavLink to="/upload" style={{ color: 'white', textDecoration: 'none', opacity: 0.9 }}>
+                Upload
+              </NavLink>
               <button type="button" onClick={onSignOut}>
-                Sign out
+                Sign Out
               </button>
             </>
           ) : (
             <>
-              <NavLink to="/signin">Sign in</NavLink>
-              <NavLink to="/signup">Sign up</NavLink>
+              <NavLink to="/signin" style={{ color: 'white', textDecoration: 'none', opacity: 0.9 }}>
+                Sign in
+              </NavLink>
+              <NavLink to="/signup" style={{ color: 'white', textDecoration: 'none', opacity: 0.9 }}>
+                Sign up
+              </NavLink>
             </>
           )}
         </div>
