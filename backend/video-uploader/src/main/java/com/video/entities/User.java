@@ -35,7 +35,6 @@ public class User {
     @Email(message = "Email should be valid!")
     private String email;
 
-    @Size(min=8, max = 32, message = "Password must be between 8 and 32 characters!")
     @Column(nullable = false, length = 255)
     @JsonIgnore
     private String password;
