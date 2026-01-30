@@ -102,12 +102,12 @@
 }
 
 .card {
-  background: rgba(255, 255, 255, 0.88);
-  border: 1px solid rgba(255, 255, 255, 0.55);
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(0, 0, 0, 0.1);
   border-radius: 14px;
-  padding: 10px;
-  display: grid;
-  gap: 10px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
   box-shadow: 0 10px 28px rgba(0, 0, 0, 0.14);
   transition: transform 120ms ease, box-shadow 120ms ease;
 }
@@ -115,6 +115,27 @@
 .card:hover {
   transform: translateY(-2px);
   box-shadow: 0 16px 36px rgba(0, 0, 0, 0.18);
+}
+
+.thumbWrap {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.thumbWrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.cardBody {
+  padding: 10px 12px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-height: 58px;
 }
 
 .cardTitleRow {
@@ -128,23 +149,45 @@
   font-weight: 800;
   font-size: 13px;
   line-height: 1.2;
+  flex: 1;
+  min-width: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .cardMeta {
   font-size: 12px;
   opacity: 0.7;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.metaUser {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.metaDate {
+  flex: none;
+  white-space: nowrap;
 }
 
 .privateBadge {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 2px 8px;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
   border-radius: 999px;
   font-size: 12px;
-  background: rgba(255, 231, 203, 0.9);
+  background: rgba(255, 231, 203, 0.95);
   color: #7a4b00;
-  border: 1px solid rgba(255, 216, 168, 0.9);
+  border: 1px solid rgba(255, 216, 168, 0.95);
 }
 
 .lock {

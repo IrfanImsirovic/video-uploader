@@ -1,4 +1,5 @@
 import { Link, NavLink, useNavigate } from 'react-router-dom'
+import { FaVideo } from 'react-icons/fa'
 import { setAuthToken } from '../api/client'
 import { useAuth } from '../state/AuthContext.jsx'
 
@@ -24,8 +25,19 @@ export default function Navbar() {
       }}
     >
       <div className="container" style={{ padding: '12px 16px', display: 'flex', gap: 16, alignItems: 'center' }}>
-        <Link to="/" style={{ fontWeight: 800, textDecoration: 'none', color: 'white' }}>
-          Video Platform
+        <Link
+          to="/"
+          style={{
+            fontWeight: 800,
+            textDecoration: 'none',
+            color: 'white',
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: 8,
+          }}
+        >
+          <FaVideo aria-hidden="true" style={{ fontSize: 14, opacity: 0.95 }} />
+          <span>Video Platform</span>
         </Link>
 
         <div style={{ marginLeft: 'auto', display: 'flex', gap: 14, alignItems: 'center' }}>

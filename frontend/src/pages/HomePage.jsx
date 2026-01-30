@@ -7,13 +7,21 @@ import './HomePage.css'
 
 function PrivateBadge() {
   return (
-    <span className="privateBadge">
+    <span className="privateBadge" title="Private" aria-label="Private">
       <span className="lock" aria-hidden="true">
         🔒
       </span>
-      Private
     </span>
   )
+}
+
+function formatPublished(dateLike) {
+  if (!dateLike) return ''
+  try {
+    return new Date(dateLike).toLocaleDateString()
+  } catch {
+    return ''
+  }
 }
 
 export default function HomePage() {
@@ -156,12 +164,23 @@ export default function HomePage() {
           {videos.map((v) => (
             <Link key={v.id} to={`/videos/${v.id}`} className="cardLink">
               <div className="card">
-                <VideoThumbnail videoId={v.id} alt={v.title} />
-                <div className="cardTitleRow">
-                  <div className="cardTitle">{v.title}</div>
-                  {v.isPrivate && <PrivateBadge />}
+                <div className="thumbWrap">
+                  <VideoThumbnail videoId={v.id} alt={v.title} />
                 </div>
-                <div className="cardMeta">by {v.uploaderUsername}</div>
+
+                <div className="cardBody">
+                  <div className="cardTitleRow">
+                    <div className="cardTitle" title={v.title}>
+                      {v.title}
+                    </div>
+                    {v.isPrivate && <PrivateBadge />}
+                  </div>
+
+                  <div className="cardMeta">
+                    <span className="metaUser">👤 by {v.uploaderUsername}</span>
+                    <span className="metaDate">📆 {formatPublished(v.createdAt)}</span>
+                  </div>
+                </div>
               </div>
             </Link>
           ))}
