@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { fetchThumbnailBlob } from '../api/videos'
 
-export default function VideoThumbnail({ videoId, alt, width = 240, height = 135 }) {
+export default function VideoThumbnail({ videoId, alt }) {
   const [src, setSrc] = useState('')
   const [error, setError] = useState(false)
 
@@ -33,11 +33,11 @@ export default function VideoThumbnail({ videoId, alt, width = 240, height = 135
     return (
       <div
         style={{
-          width,
-          height,
+          width: '100%',
+          height: '100%',
           background: 'rgba(255, 255, 255, 0.7)',
           border: '1px solid rgba(0, 0, 0, 0.08)',
-          borderRadius: 8,
+          borderRadius: 0,
           display: 'grid',
           placeItems: 'center',
           color: '#7a1f1f',
@@ -53,10 +53,10 @@ export default function VideoThumbnail({ videoId, alt, width = 240, height = 135
     return (
       <div
         style={{
-          width,
-          height,
+          width: '100%',
+          height: '100%',
           background: '#eee',
-          borderRadius: 8,
+          borderRadius: 0,
         }}
       />
     )
@@ -66,9 +66,7 @@ export default function VideoThumbnail({ videoId, alt, width = 240, height = 135
     <img
       src={src}
       alt={alt}
-      width={width}
-      height={height}
-      style={{ width, height, objectFit: 'cover', borderRadius: 8, display: 'block' }}
+      style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
     />
   )
 }
