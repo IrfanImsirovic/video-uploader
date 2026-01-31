@@ -19,3 +19,14 @@ export function getApiErrorMessage(err, fallback = 'Request failed') {
 
   return fallback
 }
+
+export function getApiFieldErrors(err) {
+  const data = err?.response?.data
+  const fieldErrors = data?.fieldErrors
+
+  if (fieldErrors && typeof fieldErrors === 'object' && !Array.isArray(fieldErrors)) {
+    return fieldErrors
+  }
+
+  return null
+}
