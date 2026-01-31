@@ -2,7 +2,12 @@ import api from './client'
 
 export async function listVideos(search) {
   const res = await api.get('/videos', {
-    params: search ? { search } : undefined,
+    
+    params: search ? { search, _ts: Date.now() } : { _ts: Date.now() },
+    headers: {
+      'Cache-Control': 'no-cache',
+      Pragma: 'no-cache',
+    },
   })
   return res.data
 }
