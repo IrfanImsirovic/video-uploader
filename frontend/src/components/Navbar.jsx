@@ -25,8 +25,9 @@ export default function Navbar() {
       }}
     >
       <div className="container" style={{ padding: '12px 16px', display: 'flex', gap: 16, alignItems: 'center' }}>
-        <Link
-          to="/"
+        <button
+          type="button"
+          onClick={() => navigate('/', { state: { clearSearch: true, timestamp: Date.now() }, replace: false })}
           style={{
             fontWeight: 800,
             textDecoration: 'none',
@@ -34,11 +35,18 @@ export default function Navbar() {
             display: 'inline-flex',
             alignItems: 'center',
             gap: 8,
+            background: 'none',
+            border: 'none',
+            cursor: 'pointer',
+            padding: 0,
+            font: 'inherit',
+            outline: 'none',
+            WebkitTapHighlightColor: 'transparent',
           }}
         >
           <FaVideo aria-hidden="true" style={{ fontSize: 14, opacity: 0.95 }} />
           <span>Video Platform</span>
-        </Link>
+        </button>
 
         <div style={{ marginLeft: 'auto', display: 'flex', gap: 14, alignItems: 'center' }}>
           {isAuthenticated ? (

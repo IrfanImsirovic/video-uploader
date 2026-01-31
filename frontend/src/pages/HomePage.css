@@ -29,7 +29,9 @@
 .searchWrap {
   margin: 16px auto 0;
   max-width: 520px;
+  width: 100%;
   position: relative;
+  box-sizing: border-box;
 }
 
 .searchInput {
@@ -39,6 +41,7 @@
   border: 1px solid rgba(0, 0, 0, 0.12);
   background: rgba(255, 255, 255, 0.85);
   outline: none;
+  box-sizing: border-box;
 }
 
 .searchInput:focus {
@@ -99,6 +102,7 @@
 .cardLink {
   text-decoration: none;
   color: inherit;
+  max-width: 400px;
 }
 
 .card {

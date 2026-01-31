@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useLocation } from 'react-router-dom'
 
 import { listVideos } from '../api/videos'
 import VideoThumbnail from '../components/VideoThumbnail.jsx'
@@ -26,6 +26,7 @@ function formatPublished(dateLike) {
 
 export default function HomePage() {
   const navigate = useNavigate()
+  const location = useLocation()
   const [input, setInput] = useState('')
   const [query, setQuery] = useState('')
 
@@ -37,6 +38,14 @@ export default function HomePage() {
   const [showSuggestions, setShowSuggestions] = useState(false)
 
   const debounceRef = useRef(null)
+
+  // Clear search when navigating back to home page
+  useEffect(() => {
+    if (location.pathname === '/' && location.state?.clearSearch) {
+      setInput('')
+      setQuery('')
+    }
+  }, [location])
 
   const title = useMemo(() => {
     return query ? `Search results for "${query}"` : 'Latest videos'
@@ -119,19 +128,37 @@ export default function HomePage() {
             />
           </form>
 
-          <svg className="searchIcon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <path
-              d="M10.5 18a7.5 7.5 0 1 1 0-15 7.5 7.5 0 0 1 0 15Z"
-              stroke="currentColor"
-              strokeWidth="2"
-            />
-            <path
-              d="M16.2 16.2 21 21"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-            />
-          </svg>
+          <button
+            type="button"
+            onClick={onSubmit}
+            className="searchIcon"
+            style={{
+              background: 'none',
+              border: 'none',
+              cursor: 'pointer',
+              padding: 0,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              outline: 'none',
+              WebkitTapHighlightColor: 'transparent',
+            }}
+            aria-label="Search"
+          >
+            <svg viewBox="0 0 24 24" fill="none" style={{ width: '100%', height: '100%' }}>
+              <path
+                d="M10.5 18a7.5 7.5 0 1 1 0-15 7.5 7.5 0 0 1 0 15Z"
+                stroke="currentColor"
+                strokeWidth="2"
+              />
+              <path
+                d="M16.2 16.2 21 21"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+              />
+            </svg>
+          </button>
 
           {showSuggestions && suggestions.length > 0 && (
             <div className="suggestions">
