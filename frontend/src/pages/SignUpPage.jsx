@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { signUp } from "../api/auth";
 import { setAuthToken } from "../api/client";
+import { getApiErrorMessage } from "../api/errors";
 import { useAuth } from "../state/AuthContext.jsx";
 
 export default function SignUpPage() {
@@ -24,7 +25,7 @@ export default function SignUpPage() {
       setAuthToken(data.token);
       nav("/", { replace: true });
     } catch (e) {
-      setErr(e?.response?.data?.message || "Sign up failed");
+      setErr(getApiErrorMessage(e, "Sign up failed"));
     } finally {
       setLoading(false);
     }

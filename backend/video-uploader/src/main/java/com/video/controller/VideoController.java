@@ -1,17 +1,22 @@
 package com.video.controller;
 import com.video.dto.VideoResponse;
 import com.video.services.VideoService;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/videos")
+@Validated
 public class VideoController {
     private final VideoService videoService;
 
@@ -30,8 +35,14 @@ public class VideoController {
     }
     @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public VideoResponse upload(
+            @NotNull(message = "File is required")
             @RequestParam("file") MultipartFile file,
+
+            @NotBlank(message = "Title is required")
+            @Size(max = 100, message = "Title must be at most 100 characters")
             @RequestParam("title") String title,
+
+            @Size(max = 500, message = "Description must be at most 500 characters")
             @RequestParam(value = "description", required = false) String description,
             @RequestParam("private") boolean isPrivate){
 
