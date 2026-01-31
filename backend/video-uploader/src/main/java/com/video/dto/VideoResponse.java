@@ -1,6 +1,6 @@
 package com.video.dto;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 public record VideoResponse(
         Long id,
@@ -8,5 +8,5 @@ public record VideoResponse(
         String description,
         boolean isPrivate,
         String uploaderUsername,
-        LocalDateTime createdAt
+        OffsetDateTime createdAt
 ) {}

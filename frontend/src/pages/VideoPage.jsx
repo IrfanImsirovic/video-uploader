@@ -40,7 +40,13 @@ export default function VideoPage() {
     if (!video?.createdAt) return ''
     try {
       const d = new Date(video.createdAt)
-      return d.toLocaleString()
+      return d.toLocaleString(undefined, {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+      })
     } catch {
       return String(video.createdAt)
     }
@@ -120,36 +126,60 @@ export default function VideoPage() {
     }
   }, [video])
 
-  return (
-    <div style={{ padding: '28px 0 48px' }}>
-      <div className="panel">
-        <div style={{ display: 'flex', justifyContent: 'space-between', gap: 16, flexWrap: 'wrap' }}>
-          <div>
-            <h1 className="title">{loadingMeta ? 'Loading…' : video?.title ?? 'Video'}</h1>
-            {video && (
-              <div className="meta">
-                <span className="sub">by {video.uploaderUsername}</span>
-                {video.isPrivate && <PrivateBadge />}
-                {prettyDate && <span className="sub">• {prettyDate}</span>}
-              </div>
-            )}
-          </div>
-          <div>
-            <Link to="/" style={{ color: '#4b2ab2', fontWeight: 700 }}>
-              ← Back
-            </Link>
-          </div>
-        </div>
+  const handleDownload = async () => {
+    if (!videoUrl || !video?.title) return
+    try {
+      const link = document.createElement('a')
+      link.href = videoUrl
+      link.download = `${video.title}.mp4`
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+    } catch (e) {
+      console.error('Download failed:', e)
+    }
+  }
 
-        {video?.description && <p style={{ marginTop: 10, opacity: 0.85 }}>{video.description}</p>}
-        {error && <div className="error" style={{ marginTop: 12 }}>{error}</div>}
+  return (
+    <div className="videoPager">
+      <div className="videoContainer">
+        {error && <div className="error" style={{ marginBottom: 16 }}>{error}</div>}
 
         {!error && (
           <>
-            <video className="video" controls src={videoUrl || undefined} poster={thumbUrl || undefined} />
+            <video className="videoPlayer" controls controlsList="nodownload" src={videoUrl || undefined} poster={thumbUrl || undefined} />
             {loadingMedia && <div style={{ marginTop: 10, opacity: 0.8 }}>Loading media…</div>}
           </>
         )}
+
+        <h1 className="videoTitle">
+          {loadingMeta ? 'Loading…' : video?.title ?? 'Video'}
+        </h1>
+
+        {video?.description && (
+          <>
+            <div className="descriptionLabel">Description</div>
+            <div className="descriptionCard">
+              {video.description}
+            </div>
+          </>
+        )}
+
+        <div className="videoMeta">
+          <div className="metaInfo">
+            <span className="metaLabel">Uploaded by {video?.uploaderUsername} on {prettyDate}</span>
+          </div>
+          {video?.isPrivate && <PrivateBadge />}
+        </div>
+
+        <div className="videoActions">
+          <Link to="/" className="actionBtn backBtn">
+            ← Back to List
+          </Link>
+          <button className="actionBtn downloadBtn" onClick={handleDownload} disabled={!videoUrl}>
+            Download Video
+          </button>
+        </div>
       </div>
     </div>
   )
