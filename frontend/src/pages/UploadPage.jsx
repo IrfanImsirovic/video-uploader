@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import { uploadVideo } from '../api/videos'
+import { getApiErrorMessage } from '../api/errors'
 import './UploadPage.css'
 
 export default function UploadPage() {
@@ -23,6 +24,10 @@ export default function UploadPage() {
     }
 
     const data = err?.response?.data
+    if (data?.fieldErrors) {
+      return getApiErrorMessage(err, 'Upload failed')
+    }
+
     const msg = data?.message ?? data
 
     if (typeof msg === 'string') {

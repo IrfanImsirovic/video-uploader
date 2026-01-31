@@ -104,6 +104,15 @@ public class VideoService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Title is required");
         }
 
+        String trimmedTitle = title.trim();
+        if (trimmedTitle.length() > 100) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Title must be at most 100 characters");
+        }
+
+        if (description != null && description.length() > 500) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Description must be at most 500 characters");
+        }
+
         StorageService.StoredFile storedVideo = storageService.store(file);
 
         RawFile videoRaw = new RawFile();
@@ -114,7 +123,7 @@ public class VideoService {
         videoRaw.setFilePath(storedVideo.filePath());
 
         Video video = new Video();
-        video.setTitle(title.trim());
+        video.setTitle(trimmedTitle);
         video.setDescription(description);
         video.setPrivate(isPrivate);
         video.setUploader(uploader);

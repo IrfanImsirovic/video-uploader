@@ -39,6 +39,7 @@ export function AuthProvider({ children }) {
     setUser(null)
     localStorage.removeItem(STORAGE_KEY)
     setAuthToken(null)
+    window.location.href = '/'
   }
 
   const value = useMemo(
