@@ -38,8 +38,9 @@ export default function HomePage() {
   const [showSuggestions, setShowSuggestions] = useState(false)
 
   const debounceRef = useRef(null)
+  const listRequestInFlightRef = useRef(false)
 
-  // Clear search when navigating back to home page
+  
   useEffect(() => {
     if (location.pathname === '/' && location.state?.clearSearch) {
       setInput('')
@@ -54,8 +55,14 @@ export default function HomePage() {
   useEffect(() => {
     let cancelled = false
 
-    async function run() {
-      setLoading(true)
+
+    const POLL_MS = 5000
+
+    async function run({ showLoading } = { showLoading: true }) {
+      if (listRequestInFlightRef.current) return
+      listRequestInFlightRef.current = true
+
+      if (showLoading) setLoading(true)
       setError('')
       try {
         const data = await listVideos(query)
@@ -64,13 +71,30 @@ export default function HomePage() {
         const msg = e?.response?.data?.message || e?.response?.data || 'Failed to load videos'
         if (!cancelled) setError(String(msg))
       } finally {
-        if (!cancelled) setLoading(false)
+        listRequestInFlightRef.current = false
+        if (!cancelled && showLoading) setLoading(false)
       }
     }
 
-    run()
+    run({ showLoading: true })
+
+    const intervalId = window.setInterval(() => {
+      run({ showLoading: false })
+    }, POLL_MS)
+
+    const onMaybeRefresh = () => {
+      if (document.visibilityState !== 'visible') return
+      run({ showLoading: false })
+    }
+
+    window.addEventListener('focus', onMaybeRefresh)
+    document.addEventListener('visibilitychange', onMaybeRefresh)
+
     return () => {
       cancelled = true
+      window.clearInterval(intervalId)
+      window.removeEventListener('focus', onMaybeRefresh)
+      document.removeEventListener('visibilitychange', onMaybeRefresh)
     }
   }, [query])
 
