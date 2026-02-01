@@ -173,14 +173,40 @@
 }
 
 .metaUser {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.metaUserIcon {
+  flex: none;
+  color: rgba(142, 73, 213, 0.95);
+}
+
+.metaUserText {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
 .metaDate {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   flex: none;
   white-space: nowrap;
+}
+
+.metaDateIcon {
+  flex: none;
+  color: rgba(142, 73, 213, 0.95);
+}
+
+.metaDateText {
+  flex: none;
 }
 
 .privateBadge {
@@ -199,4 +225,5 @@
 .lock {
   font-size: 12px;
   line-height: 1;
+  color: #fbbf24;
 }

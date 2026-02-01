@@ -36,8 +36,13 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border: none;
   font-size: 28px;
+  color: rgba(142, 73, 213, 0.95);
+}
+
+.authBadgeIcon {
+  width: 1em;
+  height: 1em;
 }
 
 .authTitle {
