@@ -1,19 +1,18 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { signUp } from "../api/auth";
-import { setAuthToken } from "../api/client";
-import { getApiErrorMessage, getApiFieldErrors } from "../api/errors";
-import { useAuth } from "../state/AuthContext.jsx";
-import { FaEnvelope, FaLock, FaUser } from "react-icons/fa";
+import { signIn } from "../../api/auth";
+import { setAuthToken } from "../../api/client";
+import { getApiErrorMessage, getApiFieldErrors } from "../../api/errors";
+import { useAuth } from "../../state/AuthContext.jsx";
+import { FaLock, FaUser } from "react-icons/fa";
 import { BsRocketTakeoffFill } from "react-icons/bs";
 
 import "./AuthPage.css";
 
-export default function SignUpPage() {
+export default function SignInPage() {
   const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [fieldErr, setFieldErr] = useState({ username: "", email: "", password: "" });
+  const [fieldErr, setFieldErr] = useState({ username: "", password: "" });
   const [formErr, setFormErr] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -23,10 +22,10 @@ export default function SignUpPage() {
   async function onSubmit(e) {
     e.preventDefault();
     setFormErr("");
-    setFieldErr({ username: "", email: "", password: "" });
+    setFieldErr({ username: "", password: "" });
     setLoading(true);
     try {
-      const data = await signUp({ username, email, password });
+      const data = await signIn({ username, password });
       setSession(data.token, { username: data.username, email: data.email });
       setAuthToken(data.token);
       nav("/", { replace: true });
@@ -34,12 +33,15 @@ export default function SignUpPage() {
       const apiFieldErrors = getApiFieldErrors(e);
       const nextFieldErr = {
         username: apiFieldErrors?.username || "",
-        email: apiFieldErrors?.email || "",
         password: apiFieldErrors?.password || "",
       };
-      const hasFieldErrors = Boolean(nextFieldErr.username || nextFieldErr.email || nextFieldErr.password);
+      const hasFieldErrors = Boolean(nextFieldErr.username || nextFieldErr.password);
       setFieldErr(nextFieldErr);
-      setFormErr(hasFieldErrors ? (apiFieldErrors?.request || "") : getApiErrorMessage(e, "Sign up failed"));
+      setFormErr(
+        hasFieldErrors
+          ? (apiFieldErrors?.request || "")
+          : getApiErrorMessage(e, "Sign in failed"),
+      );
     } finally {
       setLoading(false);
     }
@@ -52,18 +54,18 @@ export default function SignUpPage() {
           <div className="authBadge" aria-hidden="true">
             <BsRocketTakeoffFill className="authBadgeIcon" aria-hidden="true" />
           </div>
-          <h1 className="authTitle">Join Us</h1>
-          <p className="authSubtitle">Create your account to get started</p>
+          <h1 className="authTitle">Welcome Back</h1>
+          <p className="authSubtitle">Sign in to continue</p>
         </div>
 
         <form className="authForm" onSubmit={onSubmit}>
           <div className="field">
-            <label className="fieldLabel" htmlFor="signup-username">
+            <label className="fieldLabel" htmlFor="signin-username">
               Username
             </label>
             <div className="inputWrap">
               <input
-                id="signup-username"
+                id="signin-username"
                 className={`fieldInput ${fieldErr.username ? "fieldInputError" : ""}`}
                 placeholder="Username"
                 value={username}
@@ -84,43 +86,17 @@ export default function SignUpPage() {
           </div>
 
           <div className="field">
-            <label className="fieldLabel" htmlFor="signup-email">
-              Email
-            </label>
-            <div className="inputWrap">
-              <input
-                id="signup-email"
-                className={`fieldInput ${fieldErr.email ? "fieldInputError" : ""}`}
-                placeholder="Email"
-                value={email}
-                autoComplete="email"
-                onChange={(e) => {
-                  setEmail(e.target.value);
-                  if (fieldErr.email) setFieldErr((p) => ({ ...p, email: "" }));
-                  if (formErr) setFormErr("");
-                }}
-              />
-              <FaEnvelope className="fieldIcon" aria-hidden="true" />
-            </div>
-            {fieldErr.email && (
-              <div className="fieldError" role="alert">
-                {fieldErr.email}
-              </div>
-            )}
-          </div>
-
-          <div className="field">
-            <label className="fieldLabel" htmlFor="signup-password">
+            <label className="fieldLabel" htmlFor="signin-password">
               Password
             </label>
             <div className="inputWrap">
               <input
-                id="signup-password"
+                id="signin-password"
                 className={`fieldInput ${fieldErr.password ? "fieldInputError" : ""}`}
                 placeholder="Password"
                 type="password"
                 value={password}
-                autoComplete="new-password"
+                autoComplete="current-password"
                 onChange={(e) => {
                   setPassword(e.target.value);
                   if (fieldErr.password) setFieldErr((p) => ({ ...p, password: "" }));
@@ -143,12 +119,12 @@ export default function SignUpPage() {
           )}
 
           <button className="authButton" disabled={loading}>
-            {loading ? "Signing up..." : "Sign Up"}
+            {loading ? "Signing in..." : "Sign In"}
           </button>
         </form>
 
         <div className="authFooter">
-          Already have an account? <Link to="/signin">Sign in</Link>
+          No account? <Link to="/signup">Sign up</Link>
         </div>
       </div>
     </div>

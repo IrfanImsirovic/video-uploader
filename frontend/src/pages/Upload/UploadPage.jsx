@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-import { uploadVideo } from '../api/videos'
-import { getApiErrorMessage } from '../api/errors'
+import { uploadVideo } from '../../api/videos'
+import { getApiErrorMessage } from '../../api/errors'
 import './UploadPage.css'
 
 export default function UploadPage() {
@@ -118,9 +118,11 @@ export default function UploadPage() {
             <span className="help">Private videos are only visible to you.</span>
           </div>
 
-          {error && <div className="error" style={{ marginTop: 12 }}>
-            {error}
-          </div>}
+          {error && (
+            <div className="error" style={{ marginTop: 12 }}>
+              {error}
+            </div>
+          )}
 
           {loading && (
             <div style={{ marginTop: 12 }}>
