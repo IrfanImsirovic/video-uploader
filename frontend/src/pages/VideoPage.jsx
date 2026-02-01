@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
+import { FaLock } from 'react-icons/fa'
 
 import { fetchThumbnailBlob, fetchVideoBlob, getVideo } from '../api/videos'
 import './VideoPage.css'
@@ -19,7 +20,7 @@ function PrivateBadge() {
         border: '1px solid rgba(255, 216, 168, 0.9)',
       }}
     >
-      <span aria-hidden="true">🔒</span>
+      <FaLock aria-hidden="true" style={{ color: '#fbbf24' }} />
       Private
     </span>
   )

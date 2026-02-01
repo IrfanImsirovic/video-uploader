@@ -1,5 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
+import { FaLock, FaUser } from 'react-icons/fa'
+import { IoCalendarNumber } from 'react-icons/io5'
 
 import { listVideos } from '../api/videos'
 import VideoThumbnail from '../components/VideoThumbnail.jsx'
@@ -8,9 +10,7 @@ import './HomePage.css'
 function PrivateBadge() {
   return (
     <span className="privateBadge" title="Private" aria-label="Private">
-      <span className="lock" aria-hidden="true">
-        🔒
-      </span>
+      <FaLock className="lock" aria-hidden="true" />
     </span>
   )
 }
@@ -228,8 +228,14 @@ export default function HomePage() {
                   </div>
 
                   <div className="cardMeta">
-                    <span className="metaUser">👤 by {v.uploaderUsername}</span>
-                    <span className="metaDate">📆 {formatPublished(v.createdAt)}</span>
+                    <span className="metaUser">
+                      <FaUser className="metaUserIcon" aria-hidden="true" />
+                      <span className="metaUserText">by {v.uploaderUsername}</span>
+                    </span>
+                    <span className="metaDate">
+                      <IoCalendarNumber className="metaDateIcon" aria-hidden="true" />
+                      <span className="metaDateText">{formatPublished(v.createdAt)}</span>
+                    </span>
                   </div>
                 </div>
               </div>

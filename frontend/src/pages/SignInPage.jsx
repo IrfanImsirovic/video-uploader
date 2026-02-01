@@ -5,6 +5,7 @@ import { setAuthToken } from "../api/client";
 import { getApiErrorMessage, getApiFieldErrors } from "../api/errors";
 import { useAuth } from "../state/AuthContext.jsx";
 import { FaLock, FaUser } from "react-icons/fa";
+import { BsRocketTakeoffFill } from "react-icons/bs";
 
 import "./AuthPage.css";
 
@@ -47,7 +48,7 @@ export default function SignInPage() {
       <div className="authCard">
         <div className="authHeader">
           <div className="authBadge" aria-hidden="true">
-            🚀
+            <BsRocketTakeoffFill className="authBadgeIcon" aria-hidden="true" />
           </div>
           <h1 className="authTitle">Welcome Back</h1>
           <p className="authSubtitle">Sign in to continue</p>
