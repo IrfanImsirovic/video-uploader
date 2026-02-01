@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { FaLock } from 'react-icons/fa'
 
-import { fetchThumbnailBlob, fetchVideoBlob, getVideo } from '../api/videos'
+import { fetchThumbnailBlob, fetchVideoBlob, getVideo } from '../../api/videos'
 import './VideoPage.css'
 
 function PrivateBadge() {
@@ -144,31 +144,39 @@ export default function VideoPage() {
   return (
     <div className="videoPager">
       <div className="videoContainer">
-        {error && <div className="error" style={{ marginBottom: 16 }}>{error}</div>}
+        {error && (
+          <div className="error" style={{ marginBottom: 16 }}>
+            {error}
+          </div>
+        )}
 
         {!error && (
           <>
-            <video className="videoPlayer" controls controlsList="nodownload" src={videoUrl || undefined} poster={thumbUrl || undefined} />
+            <video
+              className="videoPlayer"
+              controls
+              controlsList="nodownload"
+              src={videoUrl || undefined}
+              poster={thumbUrl || undefined}
+            />
             {loadingMedia && <div style={{ marginTop: 10, opacity: 0.8 }}>Loading media…</div>}
           </>
         )}
 
-        <h1 className="videoTitle">
-          {loadingMeta ? 'Loading…' : video?.title ?? 'Video'}
-        </h1>
+        <h1 className="videoTitle">{loadingMeta ? 'Loading…' : video?.title ?? 'Video'}</h1>
 
         {video?.description && (
           <>
             <div className="descriptionLabel">Description</div>
-            <div className="descriptionCard">
-              {video.description}
-            </div>
+            <div className="descriptionCard">{video.description}</div>
           </>
         )}
 
         <div className="videoMeta">
           <div className="metaInfo">
-            <span className="metaLabel">Uploaded by {video?.uploaderUsername} on {prettyDate}</span>
+            <span className="metaLabel">
+              Uploaded by {video?.uploaderUsername} on {prettyDate}
+            </span>
           </div>
           {video?.isPrivate && <PrivateBadge />}
         </div>

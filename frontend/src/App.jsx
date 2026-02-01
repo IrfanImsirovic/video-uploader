@@ -4,11 +4,11 @@ import './App.css'
 import Navbar from './components/Navbar.jsx'
 import RequireAuth from './components/RequireAuth.jsx'
 
-import HomePage from './pages/HomePage.jsx'
-import SignInPage from './pages/SignInPage.jsx'
-import SignUpPage from './pages/SignUpPage.jsx'
-import UploadPage from './pages/UploadPage.jsx'
-import VideoPage from './pages/VideoPage.jsx'
+import HomePage from './pages/Home/HomePage.jsx'
+import SignInPage from './pages/Auth/SignInPage.jsx'
+import SignUpPage from './pages/Auth/SignUpPage.jsx'
+import UploadPage from './pages/Upload/UploadPage.jsx'
+import VideoPage from './pages/Video/VideoPage.jsx'
 
 function App() {
   return (
@@ -36,3 +36,4 @@ function App() {
 }
 
 export default App
+

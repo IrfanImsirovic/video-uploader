@@ -3,8 +3,8 @@ import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { FaLock, FaUser } from 'react-icons/fa'
 import { IoCalendarNumber } from 'react-icons/io5'
 
-import { listVideos } from '../api/videos'
-import VideoThumbnail from '../components/VideoThumbnail.jsx'
+import { listVideos } from '../../api/videos'
+import VideoThumbnail from '../../components/VideoThumbnail.jsx'
 import './HomePage.css'
 
 function PrivateBadge() {
@@ -40,7 +40,6 @@ export default function HomePage() {
   const debounceRef = useRef(null)
   const listRequestInFlightRef = useRef(false)
 
-  
   useEffect(() => {
     if (location.pathname === '/' && location.state?.clearSearch) {
       setInput('')
@@ -54,7 +53,6 @@ export default function HomePage() {
 
   useEffect(() => {
     let cancelled = false
-
 
     const POLL_MS = 5000
 
