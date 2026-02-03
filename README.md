@@ -64,6 +64,17 @@ JWT_SECRET=super-secret-key
 ```bash
 docker compose up --build
 ```
+# 2.1) Start only the backend
+```bash
+docker compose up --build db 
+```
+```bash
+docker compose up --build backend
+```
+# 2.2) Start only the frontend
+```bash
+docker compose up --build frontend
+```
 
 ## 3) Open
 - Frontend: http://localhost:3000 or http://localhost:3001

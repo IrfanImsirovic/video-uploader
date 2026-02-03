@@ -34,7 +34,6 @@ public class VideoService {
         this.storageService = storageService;
     }
 
-    // ----------------- Helpers -------------------------------
     private String currentUsernameOrNull() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth == null || auth.getName() == null) return null;
@@ -74,7 +73,6 @@ public class VideoService {
                 v.getCreatedAt()
         );
     }
-    // ----------------------------------------------------------
 
     public List<VideoResponse> list(String search) {
         Long userId = currentUserIdOrNull();

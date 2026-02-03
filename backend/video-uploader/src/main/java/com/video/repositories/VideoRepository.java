@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface VideoRepository extends JpaRepository<Video, Long> {
 
-    // List: newest first, privacy enforced
+    
     @Query("""
         SELECT v FROM Video v
         WHERE (:userId IS NULL AND v.isPrivate = false)
@@ -19,7 +19,6 @@ public interface VideoRepository extends JpaRepository<Video, Long> {
     """)
     List<Video> findVisibleVideos(@Param("userId") Long userId);
 
-    // Search by title/description (partial match), newest first, privacy enforced
     @Query("""
         SELECT v FROM Video v
         WHERE (
