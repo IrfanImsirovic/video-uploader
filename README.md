@@ -77,7 +77,7 @@ docker compose up --build frontend
 ```
 
 ## 3) Open
-- Frontend: http://localhost:3000 or http://localhost:3001
+- Frontend: http://localhost:3000 
 - Backend: http://localhost:8080
 
 ---
