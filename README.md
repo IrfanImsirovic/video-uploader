@@ -58,6 +58,7 @@ POSTGRES_USER=video_user
 POSTGRES_PASSWORD=video_pass
 POSTGRES_DB=video_db
 JWT_SECRET=super-secret-key
+JWT_EXPIRATION=86400000
 ```
 
 ## 2) Start everything
